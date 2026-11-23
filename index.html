@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StayEase - Hotel Booking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <h2>StayEase 🏨</h2>
+
+        <nav>
+            
+<nav>
+    <a href="#home">Home</a>
+    <a href="#hotels">Hotels</a>
+
+    <button onclick="openCart()">Cart 🛒</button>
+
+    <button onclick="showMyBookings()">My Bookings</button>
+
+    <button id="authBtn" onclick="openLogin()">
+        Login / Register
+    </button>
+
+    <button id="profileBtn" onclick="openProfile()" hidden>
+        My Profile 👤
+    </button>
+
+    <button id="logoutBtn" onclick="logout()" hidden>
+        Logout
+    </button>
+</nav>
+
+    </header>
+
+    <!-- Home Section -->
+    <section class="hero" id="home">
+        <h1>Find Your Perfect Stay</h1>
+        <p>Discover beautiful hotels at affordable prices.</p>
+
+<input type="text" id="search" placeholder="Search by city...">
+
+<select id="priceFilter" onchange="applyFilters()">
+    <option value="all">All Prices</option>
+    <option value="3000">Under ₹3000</option>
+    <option value="4000">Under ₹4000</option>
+    <option value="5000">Under ₹5000</option>
+</select>
+
+<select id="sortFilter" onchange="applyFilters()">
+    <option value="default">Sort By</option>
+    <option value="low">Price: Low to High</option>
+    <option value="high">Price: High to Low</option>
+</select>
+
+<button onclick="applyFilters()">Search</button>
+
+        
+    </section>
+
+    <!-- Hotels Section -->
+    <section id="hotels">
+        <h2>Popular Hotels</h2>
+        <div class="hotel-list" id="hotelList"></div>
+    </section>
+
+    <!-- Login and Register Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+
+            <span onclick="closeLogin()" class="close">×</span>
+
+            <h2 id="formTitle">Login</h2>
+
+            <form id="authForm">
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Enter Name"
+                    hidden
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter Email"
+                    required
+                >
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter Password"
+                    required
+                >
+
+                <button type="submit" id="submitBtn">
+                    Login
+                </button>
+
+            </form>
+
+            <p id="switchText">
+                New user?
+                <a href="#" onclick="switchForm(); return false;">
+                    Register
+                </a>
+            </p>
+
+            <p id="message"></p>
+
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+
+            <span onclick="closeCart()" class="close">×</span>
+
+            <h2>My Cart 🛒</h2>
+
+            <div id="cartItems"></div>
+
+            <h3 id="cartTotal">Total: ₹0</h3>
+
+            <button onclick="closeCart()">
+                Continue Shopping
+            </button>
+
+        </div>
+    </div>
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+
+        <span onclick="closeBooking()" class="close">×</span>
+
+        <h2>Book Your Hotel 🏨</h2>
+
+        <h3 id="bookingHotelName"></h3>
+
+        <form id="bookingForm">
+
+            <label>Check-in Date</label>
+            <input type="date" id="checkin" required>
+
+            <label>Check-out Date</label>
+            <input type="date" id="checkout" required>
+
+            <label>Number of Guests</label>
+            <select id="guests">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+                <option value="5">5 Guests</option>
+            </select>
+
+            <button type="submit">Confirm Booking</button>
+
+        </form>
+
+        <p id="bookingMessage"></p>
+
+    </div>
+</div>
+
+<!-- MY BOOKINGS MODAL -->
+<div id="myBookingsModal" class="modal">
+    <div class="modal-content">
+        <span onclick="closeMyBookings()" class="close">×</span>
+        <h2>My Bookings 🏨</h2>
+        <div id="myBookingsList"></div>
+    </div>
+</div>
+
+<!-- HOTEL DETAILS MODAL -->
+<div id="detailsModal" class="modal">
+    <div class="modal-content">
+        <span onclick="closeDetails()" class="close">×</span>
+
+        <h2 id="detailName"></h2>
+
+        <img id="detailImage" src="" alt="Hotel"
+             style="width:100%; border-radius:10px;">
+
+        <h3 id="detailCity"></h3>
+        <h3 id="detailPrice"></h3>
+
+        <p id="detailDescription"></p>
+
+        <h3>Facilities</h3>
+        <ul id="detailFacilities"></ul>
+
+<hr>
+
+<h3>Customer Reviews ⭐</h3>
+
+<div id="reviewsList"></div>
+
+<h3>Write a Review</h3>
+
+<form id="reviewForm">
+    <select id="reviewRating" required>
+        <option value="">Select Rating</option>
+        <option value="5">⭐⭐⭐⭐⭐ - Excellent</option>
+        <option value="4">⭐⭐⭐⭐ - Very Good</option>
+        <option value="3">⭐⭐⭐ - Good</option>
+        <option value="2">⭐⭐ - Average</option>
+        <option value="1">⭐ - Poor</option>
+    </select>
+
+    <textarea id="reviewText"
+        placeholder="Write your review..."
+        required></textarea>
+
+    <button type="submit">Submit Review</button>
+</form>
+
+
+        <button id="detailBookBtn">Book Now</button>
+    </div>
+</div>
+
+<!-- MY PROFILE MODAL -->
+<div id="profileModal" class="modal">
+    <div class="modal-content">
+
+        <span onclick="closeProfile()" class="close">×</span>
+
+        <h2>My Profile 👤</h2>
+
+        <p><strong>Name:</strong> <span id="profileName"></span></p>
+
+        <p><strong>Email:</strong> <span id="profileEmail"></span></p>
+
+        <button onclick="closeProfile()">Close</button>
+
+    </div>
+</div>
+
+
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 StayEase. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
